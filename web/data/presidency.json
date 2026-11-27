@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "note": "Game content for the Presidency mode (web/js/ext/presidency). Every effect carries a basis: 'cited' (a published estimate, linked), 'calibrated' (derived from usaciv's own data) or 'game' (a designer's assumption). In this first version every effect is 'game'. Real figures carry a source.",
+  "budget": {
+    "fiscal_year": 2025,
+    "units": "billions of dollars",
+    "lines": [
+      { "id": "outlays", "label": "Total outlays", "value": 7010 },
+      { "id": "receipts", "label": "Receipts", "value": 5235 },
+      { "id": "deficit", "label": "Deficit", "value": 1775 },
+      { "id": "social_security", "label": "Social Security", "value": 1569 },
+      { "id": "net_interest", "label": "Net interest on the public debt", "value": 1028 },
+      { "id": "medicare", "label": "Medicare (net of offsetting receipts)", "value": 992 },
+      { "id": "dod_military", "label": "DoD military (one program line, not the defense total)", "value": 868 },
+      { "id": "medicaid", "label": "Medicaid", "value": 668 }
+    ],
+    "source": {
+      "title": "CBO, Monthly Budget Review: Summary for Fiscal Year 2025 (November 10, 2025), Tables 1 and 3",
+      "url": "https://www.cbo.gov/system/files/2025-11/61307-MBR-FY25-final.pdf"
+    },
+    "discretionary": {
+      "value": 1873,
+      "defense": 893,
+      "nondefense": 980,
+      "status": "sourced, verify",
+      "note": "Discretionary outlays in FY2025: about $1.9 trillion, $893 billion defense and $980 billion nondefense. Read from the chart labels of CBO's March 2026 discretionary infographic; the PDF's text was garbled in extraction, so re-check the figures against the PDF before relying on them.",
+      "source": {
+        "title": "CBO, The Federal Budget in Fiscal Year 2025: A Closer Look at Discretionary Spending (March 2026)",
+        "url": "https://www.cbo.gov/system/files/2026-03/61952-discretionary.pdf"
+      }
+    },
+    "initiatives_fund": {
+      "value": 250,
+      "basis": "game",
+      "note": "The new money the President directs each year, in billions of dollars, on top of the existing budget, which runs on autopilot. Its size is a game rule, chosen to be large enough to matter and small next to the $7.0 trillion budget. Congress scales it after each midterm."
+    },
+    "interest_rate": {
+      "value": 0.033,
+      "basis": "game",
+      "note": "Average interest rate charged on new borrowing. A rough figure, not yet sourced: replace with Treasury's average interest rate on the debt."
+    }
+  },
+  "levers": [
+    { "id": "infrastructure", "name": "Infrastructure", "seat": "commerce", "blurb": "Roads, rail, ports and water systems.",
+      "effects": [ { "ind": "gdp", "per": 0.004, "lag": [0.3, 0.4, 0.3], "basis": "game" }, { "ind": "unemployment", "per": -0.0008, "lag": [0.5, 0.5], "basis": "game" } ] },
+    { "id": "energy", "name": "Energy and grid", "seat": "energy", "blurb": "Transmission, storage and new generation.",
+      "effects": [ { "ind": "grid", "per": 7, "lag": [0.4, 0.6], "basis": "game" }, { "ind": "gdp", "per": 0.002, "lag": [0, 0.5, 0.5], "basis": "game" } ] },
+    { "id": "broadband", "name": "Broadband", "seat": "commerce", "blurb": "Connect the households that are still offline.",
+      "effects": [ { "ind": "broadband", "per": 0.015, "lag": [0.5, 0.5], "basis": "game" }, { "ind": "income", "per": 0.002, "lag": [0, 0, 0.5, 0.5], "basis": "game" } ] },
+    { "id": "health", "name": "Health coverage", "seat": "health", "blurb": "Coverage, rural hospitals and clinics.",
+      "effects": [ { "ind": "uninsured", "per": -0.012, "lag": [0.7, 0.3], "basis": "game" }, { "ind": "wellbeing", "per": 1.5, "lag": [0, 0.5, 0.5], "basis": "game" } ] },
+    { "id": "education", "name": "Education", "seat": "labor", "blurb": "College access, research and teachers.",
+      "effects": [ { "ind": "bachelors", "per": 0.005, "lag": [0, 0.3, 0.7], "basis": "game" }, { "ind": "income", "per": 0.003, "lag": [0, 0, 0.5, 0.5], "basis": "game" } ] },
+    { "id": "apprenticeships", "name": "Apprenticeships", "seat": "labor", "blurb": "Earn-while-you-learn training with employers.",
+      "effects": [ { "ind": "unemployment", "per": -0.0015, "lag": [0.4, 0.6], "basis": "game" }, { "ind": "income", "per": 0.004, "lag": [0.3, 0.7], "basis": "game" } ] },
+    { "id": "housing", "name": "Housing", "seat": "health", "blurb": "Build more homes and help renters.",
+      "effects": [ { "ind": "rent_burden", "per": -0.008, "lag": [0.3, 0.7], "basis": "game" } ] },
+    { "id": "resilience", "name": "Disaster resilience", "seat": "energy", "blurb": "Levees, building codes and early warning.",
+      "effects": [ { "ind": "resilience", "per": 8, "lag": [0.5, 0.5], "basis": "game" } ] },
+    { "id": "rebate", "name": "Tax rebate", "seat": "treasury", "blurb": "Send money back to households.",
+      "effects": [ { "ind": "income", "per": 0.003, "lag": [1], "basis": "game" }, { "ind": "unemployment", "per": -0.0003, "lag": [1], "basis": "game" } ] },
+    { "id": "deficit", "name": "Deficit reduction", "seat": "treasury", "blurb": "Spend less than the fund allows and borrow less.",
+      "effects": [] }
+  ],
+  "indicators": [
+    { "id": "income", "name": "Median household income", "format": "usd", "higher_is": "good", "kind": "relative", "source": "ACS 1-year 2025 (states.json median_income)" },
+    { "id": "unemployment", "name": "Unemployment", "format": "pct", "higher_is": "bad", "kind": "points", "source": "ACS 1-year 2025 (states.json unemployment)" },
+    { "id": "rent_burden", "name": "Rent burden", "format": "pct", "higher_is": "bad", "kind": "points", "source": "ACS 1-year 2025 (states.json rent_burden)" },
+    { "id": "uninsured", "name": "Uninsured", "format": "pct", "higher_is": "bad", "kind": "points", "source": "ACS 5-year 2024, counties rolled up to states by population" },
+    { "id": "broadband", "name": "Broadband at home", "format": "pct", "higher_is": "good", "kind": "points", "source": "ACS 5-year 2024, counties rolled up to states by population" },
+    { "id": "bachelors", "name": "Bachelor's degree or higher", "format": "pct", "higher_is": "good", "kind": "points", "source": "ACS 5-year 2024, counties rolled up to states by population" },
+    { "id": "gdp", "name": "GDP", "format": "usd_big", "higher_is": "good", "kind": "relative", "source": "BEA CAGDP2, 2024 (states.json gdp)" },
+    { "id": "wellbeing", "name": "Wellbeing index", "format": "index", "higher_is": "good", "kind": "points", "source": "CDC PLACES, counties rolled up to states by population (100 = average county)" },
+    { "id": "grid", "name": "Grid reliability", "format": "index", "higher_is": "good", "kind": "points", "source": "Game index, not real data: starts at 60 everywhere" },
+    { "id": "resilience", "name": "Disaster resilience", "format": "index", "higher_is": "good", "kind": "points", "source": "Game index, not real data: starts at 50 everywhere" }
+  ],
+  "mandates": [
+    { "id": "jobs", "name": "Good jobs", "inds": ["unemployment", "income"] },
+    { "id": "affordability", "name": "Affordable living", "inds": ["rent_burden", "income"] },
+    { "id": "health", "name": "Health for all", "inds": ["uninsured", "wellbeing"] },
+    { "id": "growth", "name": "A growing economy", "inds": ["gdp", "unemployment"] },
+    { "id": "skills", "name": "Skills for the future", "inds": ["bachelors", "broadband"] },
+    { "id": "energy", "name": "Reliable energy", "inds": ["grid"] },
+    { "id": "resilience", "name": "Ready for disasters", "inds": ["resilience"] },
+    { "id": "fiscal", "name": "Fiscal discipline", "inds": ["_deficit"] }
+  ],
+  "seats": [
+    { "id": "treasury", "title": "Secretary of the Treasury", "name": "Margaret Hale", "color": "#c9a43a", "advisor": "economy",
+      "view": "Every dollar we borrow costs us interest for decades. Growth comes from private investment, not federal checks.",
+      "rival": "health" },
+    { "id": "commerce", "title": "Secretary of Commerce", "name": "Daniel Okafor", "color": "#2fa4b8", "advisor": "commerce",
+      "view": "Factories, ports and fiber decide where the next jobs land. We have to build.",
+      "rival": "energy" },
+    { "id": "energy", "title": "Secretary of Energy", "name": "Ingrid Lindqvist", "color": "#d98a2b", "advisor": "energy",
+      "view": "Demand on the grid is climbing. Reliable power and hardened communities come first.",
+      "rival": "commerce" },
+    { "id": "health", "title": "Secretary of Health and Human Services", "name": "Luis Reyes", "color": "#3f9c82", "advisor": "prosperity",
+      "view": "A family one illness or one rent hike from ruin is not free to work or move.",
+      "rival": "treasury" },
+    { "id": "labor", "title": "Secretary of Education and Labor", "name": "Grace Park", "color": "#4a86d6", "advisor": "knowledge",
+      "view": "Skills are the bottleneck. Degrees and apprenticeships both open doors.",
+      "rival": "treasury" }
+  ],
+  "events": [
+    { "id": "hurricane", "title": "Hurricane landfall", "pick": "disasters", "seats": ["energy", "treasury"],
+      "text": "A major hurricane has hit {state}. Its counties have had {disasters} FEMA major-disaster declarations since 2000 (OpenFEMA).",
+      "options": [
+        { "label": "Rebuild as it was", "cost": 40, "backer": "treasury", "effects": { "approval": 2, "state": { "gdp": -0.002 } }, "chain": "hurricane_again",
+          "note": "Fast and familiar. The same places stay exposed." },
+        { "label": "Rebuild to stronger codes", "cost": 70, "backer": "energy", "effects": { "approval": 1, "state": { "resilience": 10, "gdp": -0.001 } },
+          "note": "Slower and pricier now, cheaper next time." },
+        { "label": "Fund buyouts in the worst flood zones", "cost": 55, "backer": "energy", "effects": { "approval": -2, "state": { "resilience": 14, "rent_burden": 0.002 } },
+          "note": "Moves people out of harm's way. Some will not want to go." }
+      ] },
+    { "id": "hurricane_again", "title": "The storm returns", "pick": "chain", "seats": ["energy", "treasury"], "chainOnly": true,
+      "text": "Another storm has struck {state}, hitting the same neighborhoods that were rebuilt as they were.",
+      "options": [
+        { "label": "Rebuild again", "cost": 50, "backer": "treasury", "effects": { "approval": -3, "state": { "gdp": -0.003 } }, "note": "Voters are asking why this keeps happening." },
+        { "label": "This time, rebuild stronger", "cost": 80, "backer": "energy", "effects": { "approval": 0, "state": { "resilience": 12 } }, "note": "A costly lesson, learned." }
+      ] },
+    { "id": "housing", "title": "Rent squeeze", "pick": "rent_burden", "seats": ["health", "treasury"],
+      "text": "Rents in {state} are climbing again. {rent_burden} of households there already spend half their income on rent (ACS).",
+      "options": [
+        { "label": "Grants to towns that loosen zoning", "cost": 20, "backer": "commerce", "effects": { "approval": 0, "state": { "rent_burden": -0.006 } }, "note": "More homes over time. Local officials push back." },
+        { "label": "Emergency rental aid", "cost": 30, "backer": "health", "effects": { "approval": 2, "state": { "rent_burden": -0.008 } }, "note": "Fast relief. Does not add a single home." },
+        { "label": "Leave it to the market and the states", "cost": 0, "backer": "treasury", "effects": { "approval": -2, "state": { "rent_burden": 0.003 } }, "note": "No federal cost. The pressure keeps building." }
+      ] },
+    { "id": "plant", "title": "Plant closing", "pick": "manufacturing", "seats": ["labor", "commerce"],
+      "text": "A major factory in {state} will close next year. Manufacturing employs {manufacturing} of its workers (ACS).",
+      "options": [
+        { "label": "Retrain workers through apprenticeships", "cost": 8, "backer": "labor", "effects": { "approval": 1, "state": { "unemployment": -0.001, "income": 0.002 } }, "note": "Takes a year or two to pay off." },
+        { "label": "Offer the company incentives to stay", "cost": 15, "backer": "commerce", "effects": { "approval": 2, "state": { "unemployment": -0.0015 } }, "note": "Saves the jobs for now. Other companies will ask too." },
+        { "label": "Let the plant close", "cost": 0, "backer": "treasury", "effects": { "approval": -3, "state": { "unemployment": 0.002, "income": -0.002 } }, "note": "No federal cost. A hard year for the town." }
+      ] },
+    { "id": "fab", "title": "Chip fab needs workers", "pick": "fab", "seats": ["labor", "commerce"],
+      "text": "A semiconductor plant under construction in {state} warns it cannot find enough technicians to open on time.",
+      "options": [
+        { "label": "Fund technician apprenticeships", "cost": 6, "backer": "labor", "effects": { "approval": 1, "state": { "unemployment": -0.0008, "income": 0.003 } }, "note": "Local workers fill local jobs, in about two years." },
+        { "label": "Add tax credits to speed the build", "cost": 12, "backer": "commerce", "effects": { "approval": 1, "state": { "gdp": 0.003 } }, "note": "The plant opens sooner. Workers may come from elsewhere." },
+        { "label": "Let the company solve it", "cost": 0, "backer": "treasury", "effects": { "approval": -1, "state": { "gdp": -0.001 } }, "note": "No federal cost. The opening slips." }
+      ] },
+    { "id": "hospital", "title": "Rural hospital closing", "pick": "uninsured", "seats": ["health", "treasury"],
+      "text": "A rural hospital in {state} says it will close its doors. {uninsured} of the state's residents have no health insurance (ACS).",
+      "options": [
+        { "label": "Emergency grant to keep it open", "cost": 3, "backer": "health", "effects": { "approval": 2, "state": { "wellbeing": 0.5 } }, "note": "Buys time. The money problem remains." },
+        { "label": "Fund telehealth and broadband instead", "cost": 4, "backer": "commerce", "effects": { "approval": 0, "state": { "broadband": 0.003, "wellbeing": 0.3 } }, "note": "Care at a distance. No emergency room nearby." },
+        { "label": "Let it close", "cost": 0, "backer": "treasury", "effects": { "approval": -2, "state": { "wellbeing": -0.6 } }, "note": "No federal cost. The nearest ER is now an hour away." }
+      ] },
+    { "id": "grid", "title": "Grid emergency", "pick": "growth", "seats": ["energy", "commerce"],
+      "text": "A heat wave pushes the power grid in {state} to the edge. Its population grew {growth} from 2020 to 2025 (Census).",
+      "options": [
+        { "label": "Fast-track new gas plants", "cost": 15, "backer": "commerce", "effects": { "approval": 1, "state": { "grid": 8, "gdp": 0.001 } }, "note": "Quick and firm power. Locks in fuel costs for decades." },
+        { "label": "Fund transmission and batteries", "cost": 20, "backer": "energy", "effects": { "approval": 0, "state": { "grid": 10 } }, "note": "Cleaner and flexible. Lines take years to permit." },
+        { "label": "Ask residents to cut demand", "cost": 0, "backer": "treasury", "effects": { "approval": -2, "state": { "grid": 2 } }, "note": "No federal cost. Rolling blackouts are possible." }
+      ] },
+    { "id": "drought", "title": "Western drought", "pick": "drought", "seats": ["energy", "commerce"],
+      "text": "Reservoirs serving {state} have fallen sharply, and farms and fast-growing cities are competing for the water.",
+      "options": [
+        { "label": "Pay farms to use less water", "cost": 5, "backer": "energy", "effects": { "approval": 0, "state": { "resilience": 5, "income": -0.0005 } }, "note": "Saves water fast. Some farm towns lose work." },
+        { "label": "Fund water recycling plants", "cost": 9, "backer": "commerce", "effects": { "approval": 1, "state": { "resilience": 6 } }, "note": "New supply in a few years." },
+        { "label": "Leave it to the states", "cost": 0, "backer": "treasury", "effects": { "approval": -1, "state": { "resilience": -3 } }, "note": "No federal cost. The states may not agree." }
+      ] }
+  ],
+  "event_places": {
+    "fab": { "states": ["AZ", "OH", "TX", "NY"], "note": "States with large chip fabs announced or under construction, from public announcements. Hand-curated and not checked against a dataset." },
+    "drought": { "states": ["AZ", "NV", "CA", "UT", "CO", "NM", "WY"], "note": "The seven Colorado River basin states. Hand-written list." }
+  }
+}

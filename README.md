@@ -25,6 +25,25 @@ by a small Python pipeline that uses only the standard library, from public down
   </tr>
 </table>
 
+## Civ USA: the Presidency mode
+
+This fork adds a game on top of usaciv. Press **Presidency** in the top bar and you are the President. You serve up to two
+four-year terms; the 22nd Amendment bars a third.
+
+- **Inauguration:** pick three priorities. Your mandate decides what counts as success.
+- **Cabinet briefing:** five fictional secretaries pitch programs, predict results and clash over money. They share a
+  fixed pool of 100 influence points, so one gains only when another loses. Ignore one for too long and they leak to
+  the press or threaten to resign.
+- **Budget season:** direct a yearly fund in real dollars across ten levers, apprenticeships among them, and pick up to
+  three priority states.
+- **Crises:** hurricanes, rent squeezes, plant closings, chip-fab worker shortages, rural hospitals, grid emergencies
+  and droughts land on real states picked from the data.
+- **Year-end report:** see what changed nationally and on the map, then face midterms and re-election.
+
+The starting point is real data, and the budget context comes from CBO's FY2025 figures. Everything after inauguration
+is a teaching model, not a forecast. Every effect size is labelled **Game rule** in the app until a published estimate
+replaces it. The game content lives in `web/data/presidency.json` and the simulation in `web/js/ext/presidency/model.js`.
+
 ## What's in it
 
 - **The map.** Painted hex terrain: forests, crop patchwork, wooded hills, snowy ranges, Great Basin ranges and
