@@ -719,6 +719,25 @@ NOAA events span many states: never add state costs together into a national fig
 helper `disasters.county_declarations(fema_interim, geoids)` gives the per-county counts used by the `disasters` lens,
 the counties.json column and this file, so the three always agree.
 
+### presidency.json (lazy, hand-written)
+
+Game content for the Presidency mode (`web/js/ext/presidency/`). Unlike the other files it is written by hand, not built
+by the pipeline. Keys:
+
+* **`budget`**: real FY2025 federal figures in billions of dollars (`lines`, `discretionary`), each with a `source`
+  {title, url}; plus two game rules, `initiatives_fund` (the money the player directs each year) and `interest_rate`.
+* **`levers`**: `{id, name, seat, blurb, effects: [{ind, per, lag, basis}]}`. An effect moves indicator `ind` by
+  `per × ln(1 + dollars per resident / 300)` (a fraction of the value for `relative` indicators, an absolute change
+  otherwise), spread over the years in `lag` (shares summing to 1). `basis` is `cited`, `calibrated` or `game`; a
+  `cited` effect must name its study. In version 1 every effect is `game`.
+* **`indicators`**: `{id, name, format, higher_is, kind: relative|points, source}`. `grid` and `resilience` are game
+  indices with no real data.
+* **`mandates`**, **`seats`** (fictional cabinet: `{id, title, name, color, advisor, view, rival}`), **`events`**
+  (`{id, title, pick, seats, text, options: [{label, cost, backer, effects: {approval, state: {ind: delta}}, chain?, note}]}`)
+  and **`event_places`** (hand-curated state lists, each with a `note` saying so).
+
+The simulation is `model.js` (no DOM); run its tests with `node --test web/js/ext/presidency/model.test.js`.
+
 ## sources.json
 
 A list of `{id, title, publisher, homepage, license, description, used_for, vintage, files: [{file, url, retrieved, sha256, bytes}]}`.
